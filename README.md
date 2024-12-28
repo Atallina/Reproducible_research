@@ -31,13 +31,21 @@ ssh -p 627 St_4@bioinformatics.isu.ru
 
 _указание пути исполняемого файла программы_
 export PATH=$PATH:/media/secondary/apps/sratoolkit.3.0.0-ubuntu64/bin/
+
 _скачивание данных по реакции на 5 мМ D-лактата_
+
 fasterq-dump --threads 2 -A --progress SRR24466389; 
+
 fasterq-dump --threads 2 -A --progress SRR24466390; 
+
 fasterq-dump --threads 2 -A --progress SRR24466391; 
+
 fasterq-dump --threads 2 -A --progress SRR24466380; 
+
 fasterq-dump --threads 2 -A --progress SRR24466381;
+
 fasterq-dump --threads 2 -A --progress SRR24466382
+
 ## _анализ данных_
 ## _результаты_
 ![Rplot](https://github.com/user-attachments/assets/87893792-dd13-4f0a-ac71-a76764065abc)
