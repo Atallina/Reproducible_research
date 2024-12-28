@@ -52,12 +52,59 @@ fasterq-dump --threads 2 -A --progress SRR24466381;
 fasterq-dump --threads 2 -A --progress SRR24466382
 
 ### _визуализация данных_
-Визуализация результатов осуществлялась при помощи R 4.3.3
+Визуализация результатов осуществлялась при помощи R 4.3.3 и IDE RStudio 2024.09.0
+# используемый код для визуализации и анализа
+                library(ggplot2)
+                library(ggpubr)
+                library(openxlsx)
+                library(DESeq2)
+                library(EnhancedVolcano)
+                #загрузка и чтение данных 
+                data1 <-read.xlsx("253_2023_12863_MOESM2_ESM.xlsx",sheet = 3)
+                data1$condition <- as.factor(data1$Condition)
+                count_table <- read.delim("C:\\Users\\admin\\Downloads\\allSamples.featureCounts.txt", skip=1, row.names="Geneid")
+                sample_table <- data.frame(condition=c("DL", "DL", "DL", "control", "control", 
+                                                     "control"))
+                # построение графика box-plot
+                ggplot(data=data1,aes(x=condition,y=RGR2,fill = condition))+
+                        geom_boxplot(outliers = FALSE,size=0.4,alpha = 0.1, color = "red")+
+                        geom_jitter(aes(colour = condition),width = 0.1)+
+                        ylab("Relaitive growth rate")+ xlab("")+
+                        geom_pwc(method="wilcox_test", label ="p.adj")
+                # анализ дифференциации экспрессии
+                ddsFullCountTable <- DESeqDataSetFromMatrix(countData = count_table[,6:11], colData =       sample_table, design = ~ condition)
+                dds <- DESeq(ddsFullCountTable)
+                res <- results(dds)
+                # построение графика volcano plot
+                EnhancedVolcano(res, lab = rownames(res),
+                                x = 'log2FoldChange', y = 'pvalue',
+                                pCutoff=0.05, pCutoffCol = 'padj', FCcutoff = 1,
+                                title="5mM DL vs. control", subtitle="",
+                                col = c("grey30", "grey30", "grey30", "red2"),
+                                xlab="", ylab = bquote(~-Log[10] ~ italic(p)),
+                                caption="", selectLab = "", legendPosition = 'none')'
+
 
 ## _результаты_
+Получили визуализированные результаты:
+
 ![Rplot](https://github.com/user-attachments/assets/87893792-dd13-4f0a-ac71-a76764065abc)
 ![Rplot 5DL vs control](https://github.com/user-attachments/assets/475e1dc2-4854-4c88-8c89-126b8da42239)
 
-На графике 2 отображены изменения экспрессии генов для основных сравнений с дифференциально экспрессируемыми генами 
+На графиках отображено: влияние Ph на рост и изменение экспрессии генов 
 ## Обсуждение
+В оригинальной статье данные визуализированы следующим образом:
+
+![image](https://github.com/user-attachments/assets/1d4a278a-e33c-4605-9d94-61d6702e0072)
+
+![image](https://github.com/user-attachments/assets/a8ed9134-d827-40f1-a4e5-9db2c6ec706b)
+
+
+
+
 ## Заключение
+В этом исследовании был изучен транскрипционный ответ S. cerevisiae к энантиомерам LA. 
+Было обнаружено, что не было никакой реакции на концентрации DLA 0,5 мМ и ниже, а реакция 
+на высокую онцентрацию DLA и LLA была довольно схожей и даже более выраженной для DLA, чем для LLA. 
+Полученные результаты не позволяют использовать S. cerevisiae в качестве сенсора для DLA.
+
