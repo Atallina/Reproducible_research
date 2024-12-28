@@ -5,7 +5,7 @@ Drozdova, P., Gurkov, A., Saranchina, A. et al.
 Transcriptional response of Saccharomyces cerevisiae to lactic acid enantiomers. 
 Appl Microbiol Biotechnol 108, 121 (2024). 
 https://doi.org/10.1007/s00253-023-12863-z
-##Краткое резюме статьи:
+## Краткое резюме статьи:
         В статье представлены исследования транскрипционного ответа штамма BY4742 S. cerevisiae 
     на широкий диапазон концентраций DLA (от 0,05 до 45 мМ) и результаты сравнения его с 
     ответом на 45 мМ L-молочную кислоту (LLA). 
